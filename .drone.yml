@@ -29,7 +29,7 @@ steps:
   - name: check-coverage
     image: node:12
     commands:
-      - npm run check-coverage
+      - npm run coverage
 
   - name: build
     image: node:12
@@ -48,6 +48,6 @@ name: npm_token
 data: 7uFoHnowZyWM6w7MyOYuJsf228yTMxHOeJYOVQ==
 ---
 kind: signature
-hmac: 6e0884bd8ca3b6dee53753eb2e231a28eb4e0052623f165c3243d477d68793f5
+hmac: 134627e5382329d03f74f4365c8ab74ab7dc52a754ab17d3025c81246bb9a333
 
 ...
