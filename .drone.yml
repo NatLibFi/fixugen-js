@@ -54,9 +54,9 @@ steps:
 ---
 kind: secret
 name: npm_token
-data: 7uFoHnowZyWM6w7MyOYuJsf228yTMxHOeJYOVQ==
+data: EbWoRzH5ezRXvRcRTfCbCYO4mBd3yYHK+e85U1bOHCjyBgZH4amm5yj/Dh19JH6GPF66IfER46je+IPm61BGGQ==
 ---
 kind: signature
-hmac: 8144f74e4f8efe09db33eec4da4371ff1a074631d308a1728bc9e49a0f3bce0d
+hmac: e7203bb7a79cef87a4ed3dc2ae701e6808dc35c3367397fb13f57a3188192c6f
 
 ...
