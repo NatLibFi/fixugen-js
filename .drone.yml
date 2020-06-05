@@ -42,13 +42,19 @@ steps:
     image: quay.io/natlibfi/nodejsscan
     commands:
       - python /usr/src/app/cli.py -d dist
-
+  
+  - name: npm
+    image: plugins/npm
+    settings:
+      registry: 'https://registry.npmjs.org/'
+      token:
+        from_secret: npm_token
 ---
 kind: secret
 name: npm_token
 data: 7uFoHnowZyWM6w7MyOYuJsf228yTMxHOeJYOVQ==
 ---
 kind: signature
-hmac: 0a1ac8db4eb739c403b6ae6283f0b50c572f5f5b3057bfbfde0d1db313d4472f
+hmac: 265a76b02fb851fc6d5f8aa3894bc24c355c23e15f4fe05f3e5760dbcff5e619
 
 ...
