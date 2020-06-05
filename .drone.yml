@@ -49,12 +49,14 @@ steps:
       registry: 'https://registry.npmjs.org/'
       token:
         from_secret: npm_token
+    when:
+      event: tag
 ---
 kind: secret
 name: npm_token
 data: 7uFoHnowZyWM6w7MyOYuJsf228yTMxHOeJYOVQ==
 ---
 kind: signature
-hmac: 265a76b02fb851fc6d5f8aa3894bc24c355c23e15f4fe05f3e5760dbcff5e619
+hmac: 8144f74e4f8efe09db33eec4da4371ff1a074631d308a1728bc9e49a0f3bce0d
 
 ...
