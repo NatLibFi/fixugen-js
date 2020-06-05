@@ -6,6 +6,7 @@ name: Default
 trigger:
   event:
     - push
+    - tag
 
 steps:
 
@@ -48,6 +49,6 @@ name: npm_token
 data: 7uFoHnowZyWM6w7MyOYuJsf228yTMxHOeJYOVQ==
 ---
 kind: signature
-hmac: 134627e5382329d03f74f4365c8ab74ab7dc52a754ab17d3025c81246bb9a333
+hmac: 0a1ac8db4eb739c403b6ae6283f0b50c572f5f5b3057bfbfde0d1db313d4472f
 
 ...
