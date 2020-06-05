@@ -57,6 +57,6 @@ name: npm_token
 data: EbWoRzH5ezRXvRcRTfCbCYO4mBd3yYHK+e85U1bOHCjyBgZH4amm5yj/Dh19JH6GPF66IfER46je+IPm61BGGQ==
 ---
 kind: signature
-hmac: e7203bb7a79cef87a4ed3dc2ae701e6808dc35c3367397fb13f57a3188192c6f
+hmac: dbcf85def75c8aac780da7a844e728063859782bc2a78900460ee01ce07af6aa
 
 ...
