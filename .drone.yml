@@ -6,13 +6,14 @@ name: Default
 trigger:
   event:
     - push
+    - tag
 
 steps:
 
   - name: audit
     image: node:12
     commands:
-      - npm audit --package-lock-only --audit-level=moderate
+      - npm audit --package-lock-only --production --audit-level=moderate
 
   - name: install
     image: node:12
@@ -41,13 +42,21 @@ steps:
     image: quay.io/natlibfi/nodejsscan
     commands:
       - python /usr/src/app/cli.py -d dist
-
+  
+  - name: npm
+    image: plugins/npm
+    settings:
+      registry: 'https://registry.npmjs.org/'
+      token:
+        from_secret: npm_token
+    when:
+      event: tag
 ---
 kind: secret
 name: npm_token
-data: 7uFoHnowZyWM6w7MyOYuJsf228yTMxHOeJYOVQ==
+data: EbWoRzH5ezRXvRcRTfCbCYO4mBd3yYHK+e85U1bOHCjyBgZH4amm5yj/Dh19JH6GPF66IfER46je+IPm61BGGQ==
 ---
 kind: signature
-hmac: 134627e5382329d03f74f4365c8ab74ab7dc52a754ab17d3025c81246bb9a333
+hmac: dbcf85def75c8aac780da7a844e728063859782bc2a78900460ee01ce07af6aa
 
 ...

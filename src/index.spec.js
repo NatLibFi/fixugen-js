@@ -34,7 +34,7 @@ describe('index', () => {
     let callbackCount = 0; // eslint-disable-line functional/no-let
 
     generateTests({
-      path: [__dirname, '..', 'test-fixtures'],
+      path: [__dirname, '..', 'test-fixtures', '01'],
       callback: args => {
         try {
           expect(callbackCount).to.equal(0);
@@ -59,7 +59,7 @@ describe('index', () => {
         },
         describe: (description, callback) => {
           try {
-            expect(description).to.equal('index');
+            expect(description).to.equal('test');
             return callback();
           } catch (err) {
             done(err);
@@ -74,7 +74,7 @@ describe('index', () => {
 
     generateTests({
       useMetadataFile: true,
-      path: [__dirname, '..', 'test-fixtures'],
+      path: [__dirname, '..', 'test-fixtures', '01'],
       callback: args => {
         try {
           expect(callbackCount).to.equal(0);
@@ -100,7 +100,47 @@ describe('index', () => {
         },
         describe: (description, callback) => {
           try {
-            expect(description).to.equal('index');
+            expect(description).to.equal('test');
+            return callback();
+          } catch (err) {
+            done(err);
+          }
+        }
+      }
+    });
+  });
+
+  it('Should not recurse', done => {
+    let callbackCount = 0; // eslint-disable-line functional/no-let
+
+    generateTests({
+      path: [__dirname, '..', 'test-fixtures', '02'],
+      recurse: false,
+      callback: args => {
+        try {
+          expect(callbackCount).to.equal(0);
+          expect(args).to.be.an('object');
+          expect(args).to.have.all.keys('getFixture', 'getFixtures');
+          expect(args.getFixture('test.txt')).to.equal('foo');
+
+          callbackCount++; // eslint-disable-line no-plusplus
+          done();
+        } catch (err) {
+          done(err);
+        }
+      },
+      mocha: {
+        it: (description, callback) => {
+          try {
+            expect(description).to.equal('01');
+            return callback();
+          } catch (err) {
+            done(err);
+          }
+        },
+        describe: (description, callback) => {
+          try {
+            expect(description).to.equal('02');
             return callback();
           } catch (err) {
             done(err);
