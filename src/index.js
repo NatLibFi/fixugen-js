@@ -33,6 +33,7 @@ import {readdirSync, existsSync, readFileSync} from 'fs';
 export default ({
   callback,
   path,
+  recurse = true,
   fixura = {},
   useMetadataFile = false,
   mocha = {}
@@ -40,8 +41,16 @@ export default ({
   const describeCallback = mocha.describe || /* istanbul ignore next: Needs to be overriden in tests */ describe;
   const itCallback = mocha.it || /* istanbul ignore next: Needs to be overriden in tests */ it;
 
-  const rootDir = joinPath(...path);
-  readdirSync(rootDir).forEach(dir => {
+  if (recurse) {
+    const rootDir = joinPath(...path);
+    return readdirSync(rootDir).forEach(dir => setup(dir, rootDir));
+  }
+
+  const rootDir = joinPath(...path.slice(0, -1));
+  const [subDir] = path.slice(-1);
+  setup(subDir, rootDir);
+
+  function setup(dir, rootDir) {
     describeCallback(dir, () => {
       setupMochaCallbacks();
 
@@ -72,5 +81,5 @@ export default ({
         afterEach(afterEachCallback);
       }
     });
-  });
+  }
 };

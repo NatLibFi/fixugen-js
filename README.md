@@ -23,6 +23,7 @@ generateTests({
 ### Options
 - **callback**: A callback function passed to Mocha's `it`. Receives Fixura's function as arguments.
 - **path**: An array of path components which make up a path to the test fixtures directory
+- **recurse**: Whether to recurse into the subdirectories of **path**. If `false` the last directory of the path is used as the name of the Mocha's describe-call and it's direct subdirectories are used as unit test directories. Defaults to **true**
 - **fixura**: Options that are passed to Fixura.
 - **useMetadataFile**: If set to true, reads and parses a file named `metadata.json` in each unit test directory. The content must be a JSON object and it's properties as passed to the unit test callback function. If a property `description` is present, it is used as the test's description. Defaults to *false*.
 - **mocha**: An object which maps the following properties to Mocha's corresponding callbacks: **after**, **before**, **afterEach**, **beforeEach**
