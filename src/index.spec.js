@@ -1,36 +1,8 @@
-/**
-*
-* @licstart  The following is the entire license notice for the JavaScript code in this file.
-*
-* Generate Node.js unit tests from fixtures and callbacks
-*
-* Copyright (C) 2020 University Of Helsinki (The National Library Of Finland)
-*
-* This file is part of fixugen-js
-*
-* fixugen-js program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU Affero General Public License as
-* published by the Free Software Foundation, either version 3 of the
-* License, or (at your option) any later version.
-*
-* fixugen-js is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU Affero General Public License for more details.
-*
-* You should have received a copy of the GNU Affero General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*
-* @licend  The above is the entire license notice
-* for the JavaScript code in this file.
-*
-*/
-
 import {expect} from 'chai';
 import generateTests from '.';
 
-describe('index', () => {
-  it('Should invoke callback with only Fixura functions', done => {
+describe.only('index', () => {
+  it.only('Should invoke callback with only Fixura functions', done => {
     let callbackCount = 0; // eslint-disable-line functional/no-let
 
     generateTests({
@@ -49,12 +21,14 @@ describe('index', () => {
         }
       },
       mocha: {
-        it: (description, callback) => {
-          try {
-            expect(description).to.equal('01');
-            return callback();
-          } catch (err) {
-            done(err);
+        it: {
+          default: (description, callback) => {
+            try {
+              expect(description).to.equal('01');
+              return callback();
+            } catch (err) {
+              done(err);
+            }
           }
         },
         describe: (description, callback) => {
@@ -69,7 +43,7 @@ describe('index', () => {
     });
   });
 
-  it('Should use metadata file for parameters', done => {
+  it.only('Should use metadata file for parameters', done => {
     let callbackCount = 0; // eslint-disable-line functional/no-let
 
     generateTests({
@@ -90,12 +64,14 @@ describe('index', () => {
         }
       },
       mocha: {
-        it: (description, callback) => {
-          try {
-            expect(description).to.equal('foo');
-            return callback();
-          } catch (err) {
-            done(err);
+        it: {
+          default: (description, callback) => {
+            try {
+              expect(description).to.equal('01 foo');
+              return callback();
+            } catch (err) {
+              done(err);
+            }
           }
         },
         describe: (description, callback) => {
@@ -110,7 +86,7 @@ describe('index', () => {
     });
   });
 
-  it('Should not recurse', done => {
+  it.only('Should not recurse', done => {
     let callbackCount = 0; // eslint-disable-line functional/no-let
 
     generateTests({
@@ -130,12 +106,14 @@ describe('index', () => {
         }
       },
       mocha: {
-        it: (description, callback) => {
-          try {
-            expect(description).to.equal('01');
-            return callback();
-          } catch (err) {
-            done(err);
+        it: {
+          default: (description, callback) => {
+            try {
+              expect(description).to.equal('01');
+              return callback();
+            } catch (err) {
+              done(err);
+            }
           }
         },
         describe: (description, callback) => {
@@ -150,3 +128,42 @@ describe('index', () => {
     });
   });
 });
+
+describe.only('Test naming', async () => {
+  await generateTests({
+    path: [__dirname, '..', 'test-fixtures', 'naming'],
+    recurse: true,
+    useMetadataFile: true,
+    callback: args => {
+      expect(args).to.be.an('object');
+      expect(args).to.have.all.keys('getFixture', 'getFixtures');
+    }
+  });
+});
+
+describe.only('Skip', async () => {
+  await generateTests({
+    path: [__dirname, '..', 'test-fixtures', 'skip'],
+    recurse: true,
+    useMetadataFile: true,
+    callback: args => {
+      expect(args).to.be.an('object');
+      expect(args).to.have.all.keys('getFixture', 'getFixtures');
+      expect(args.getFixture('test.txt')).to.equal('foo');
+    }
+  });
+});
+
+describe.only('Only', async () => {
+  await generateTests({
+    path: [__dirname, '..', 'test-fixtures', 'only'],
+    recurse: true,
+    useMetadataFile: true,
+    callback: args => {
+      expect(args).to.be.an('object');
+      expect(args).to.have.all.keys('getFixture', 'getFixtures');
+      expect(args.getFixture('test.txt')).to.equal('foo');
+    }
+  });
+});
+
