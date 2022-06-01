@@ -25,11 +25,23 @@ generateTests({
 - **path**: An array of path components which make up a path to the test fixtures directory
 - **recurse**: Whether to recurse into the subdirectories of **path**. If `false` the last directory of the path is used as the name of the Mocha's describe-call and it's direct subdirectories are used as unit test directories. Defaults to **true**
 - **fixura**: Options that are passed to Fixura.
-- **useMetadataFile**: If set to true, reads and parses a file named `metadata.json` in each unit test directory. The content must be a JSON object and it's properties as passed to the unit test callback function. If a property `description` is present, it is used as the test's description. Defaults to *false*.
+- **useMetadataFile**: If set to true, reads and parses a file named `metadata.json` in each unit test directory. The content must be a JSON object and it's properties as passed to the unit test callback function.
+  - If a property `description` is present, it is used as the test's description (Defaults to *false* and folder name is used).
+  - If a property `skip` is present, it decides if test is skipped (Defaults to *false*).
+  - If a property `only` is present, it decides if this/these tests are only run (Defaults to *false*).
 - **mocha**: An object which maps the following properties to Mocha's corresponding callbacks: **after**, **before**, **afterEach**, **beforeEach**
+
+### Example metadata.json
+```json
+{
+  "description": "Example description of test",
+  "skip": false,
+  "only": false
+}
+```
 
 ## License and copyright
 
 Copyright (c) 2020 **University Of Helsinki (The National Library Of Finland)**
 
-This project's source code is licensed under the terms of **GNU Lesser General Public License Version 3** or any later version.
+This project's source code is licensed under the terms of **MIT** or any later version.

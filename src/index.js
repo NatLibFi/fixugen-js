@@ -1,31 +1,3 @@
-/**
-*
-* @licstart  The following is the entire license notice for the JavaScript code in this file.
-*
-* Generate Node.js unit tests from fixtures and callbacks
-*
-* Copyright (C) 2020 University Of Helsinki (The National Library Of Finland)
-*
-* This file is part of fixugen-js
-*
-* fixugen-js program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU Affero General Public License as
-* published by the Free Software Foundation, either version 3 of the
-* License, or (at your option) any later version.
-*
-* fixugen-js is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU Affero General Public License for more details.
-*
-* You should have received a copy of the GNU Affero General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*
-* @licend  The above is the entire license notice
-* for the JavaScript code in this file.
-*
-*/
-
 import fixtureFactory from '@natlibfi/fixura';
 import {join as joinPath} from 'path';
 import {readdirSync, existsSync, readFileSync} from 'fs';
@@ -39,7 +11,19 @@ export default ({
   mocha = {}
 }) => {
   const describeCallback = mocha.describe || /* istanbul ignore next: Needs to be overriden in tests */ describe;
-  const itCallback = mocha.it || /* istanbul ignore next: Needs to be overriden in tests */ it;
+  const itCallback = generateIt;
+
+  function generateIt(only = false, skip = false) {
+    if (skip) {
+      return mocha.it?.skip || /* istanbul ignore next: Needs to be overriden in tests */ it.skip;
+    }
+
+    if (only) {
+      return mocha.it?.only || /* istanbul ignore next: Needs to be overriden in tests */ it.only;
+    }
+
+    return mocha.it?.default || /* istanbul ignore next: Needs to be overriden in tests */ it;
+  }
 
   if (recurse) {
     const rootDir = joinPath(...path);
@@ -61,19 +45,21 @@ export default ({
           const metadataPath = joinPath(rootDir, dir, subDir, 'metadata.json');
 
           if (existsSync(metadataPath)) {
-            const {description, ...attributes} = JSON.parse(readFileSync(metadataPath, 'utf8'));
-            return itCallback(description || subDir, () => callback({...attributes, ...fixtureInterface}));
+            const {description, skip = false, only = false, ...attributes} = JSON.parse(readFileSync(metadataPath, 'utf8'));
+            const subDirIsDigits = Number.isInteger(Number(subDir));
+            const testDescription = `${subDirIsDigits ? `${subDir} ` : ''}${skip ? 'SKIPPED ' : ''}${only ? 'ONLY ' : ''}${description || `${subDirIsDigits ? '' : subDir}`}`;
+            return itCallback(only, skip)(testDescription, () => callback({...attributes, ...fixtureInterface}));
           }
         }
 
-        itCallback(subDir, () => callback(fixtureInterface));
+        itCallback()(subDir, () => callback(fixtureInterface));
       });
 
       function setupMochaCallbacks() {
-        const afterCallback = mocha.after || (() => {});// eslint-disable-line no-empty-function
-        const beforeCallback = mocha.before || (() => {});// eslint-disable-line no-empty-function
-        const beforeEachCallback = mocha.beforeEach || (() => {});// eslint-disable-line no-empty-function
-        const afterEachCallback = mocha.afterEach || (() => {});// eslint-disable-line no-empty-function
+        const afterCallback = mocha.after || (() => { });// eslint-disable-line no-empty-function
+        const beforeCallback = mocha.before || (() => { });// eslint-disable-line no-empty-function
+        const beforeEachCallback = mocha.beforeEach || (() => { });// eslint-disable-line no-empty-function
+        const afterEachCallback = mocha.afterEach || (() => { });// eslint-disable-line no-empty-function
 
         after(afterCallback);
         before(beforeCallback);
