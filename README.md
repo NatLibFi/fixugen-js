@@ -28,7 +28,7 @@ generateTests({
 - **useMetadataFile**: If set to true, reads and parses a file named `metadata.json` in each unit test directory. The content must be a JSON object and it's properties as passed to the unit test callback function.
   - If a property `description` is present, it is used as the test's description (Defaults to *false* and folder name is used).
   - If a property `skip` is present, it decides if test is skipped (Defaults to *false*).
-  - If a property `only` is present, it decides if this/theis tests are only run (Defaults to *false*).
+  - If a property `only` is present, it decides if this/these tests are only run (Defaults to *false*).
 - **mocha**: An object which maps the following properties to Mocha's corresponding callbacks: **after**, **before**, **afterEach**, **beforeEach**
 
 ### Example metadata.json
