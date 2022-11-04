@@ -11,7 +11,7 @@ describe.only('index', () => {
         try {
           expect(callbackCount).to.equal(0);
           expect(args).to.be.an('object');
-          expect(args).to.have.all.keys('getFixture', 'getFixtures');
+          expect(args).to.have.all.keys('getFixture', 'getFixtures', 'dirName');
           expect(args.getFixture('test.txt')).to.equal('foo');
 
           callbackCount++; // eslint-disable-line no-plusplus
@@ -53,7 +53,7 @@ describe.only('index', () => {
         try {
           expect(callbackCount).to.equal(0);
           expect(args).to.be.an('object');
-          expect(args).to.have.all.keys('getFixture', 'getFixtures', 'foo');
+          expect(args).to.have.all.keys('getFixture', 'getFixtures', 'foo', 'dirName');
           expect(args.getFixture('test.txt')).to.equal('foo');
           expect(args.foo).to.equal('bar');
 
@@ -96,7 +96,7 @@ describe.only('index', () => {
         try {
           expect(callbackCount).to.equal(0);
           expect(args).to.be.an('object');
-          expect(args).to.have.all.keys('getFixture', 'getFixtures');
+          expect(args).to.have.all.keys('getFixture', 'getFixtures', 'dirName');
           expect(args.getFixture('test.txt')).to.equal('foo');
 
           callbackCount++; // eslint-disable-line no-plusplus
@@ -136,7 +136,8 @@ describe.only('Test naming', async () => {
     useMetadataFile: true,
     callback: args => {
       expect(args).to.be.an('object');
-      expect(args).to.have.all.keys('getFixture', 'getFixtures');
+      expect(args).to.have.all.keys('getFixture', 'getFixtures', 'dirName');
+      expect(args.getFixture('dirName.txt')).to.equal(args.dirName);
     }
   });
 });
@@ -148,7 +149,7 @@ describe.only('Skip', async () => {
     useMetadataFile: true,
     callback: args => {
       expect(args).to.be.an('object');
-      expect(args).to.have.all.keys('getFixture', 'getFixtures');
+      expect(args).to.have.all.keys('getFixture', 'getFixtures', 'dirName');
       expect(args.getFixture('test.txt')).to.equal('foo');
     }
   });
@@ -161,7 +162,7 @@ describe.only('Only', async () => {
     useMetadataFile: true,
     callback: args => {
       expect(args).to.be.an('object');
-      expect(args).to.have.all.keys('getFixture', 'getFixtures');
+      expect(args).to.have.all.keys('getFixture', 'getFixtures', 'dirName');
       expect(args.getFixture('test.txt')).to.equal('foo');
     }
   });
