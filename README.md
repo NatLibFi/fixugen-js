@@ -22,6 +22,7 @@ generateTests({
 
 ### Options
 - **callback**: A callback function passed to Mocha's `it`. Receives Fixura's function as arguments.
+  - **dirName**: callback gets dirName variable that is one folder up
 - **path**: An array of path components which make up a path to the test fixtures directory
 - **recurse**: Whether to recurse into the subdirectories of **path**. If `false` the last directory of the path is used as the name of the Mocha's describe-call and it's direct subdirectories are used as unit test directories. Defaults to **true**
 - **fixura**: Options that are passed to Fixura.

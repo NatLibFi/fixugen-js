@@ -48,11 +48,11 @@ export default ({
             const {description, skip = false, only = false, ...attributes} = JSON.parse(readFileSync(metadataPath, 'utf8'));
             const subDirIsDigits = Number.isInteger(Number(subDir));
             const testDescription = `${subDirIsDigits ? `${subDir} ` : ''}${skip ? 'SKIPPED ' : ''}${only ? 'ONLY ' : ''}${description || `${subDirIsDigits ? '' : subDir}`}`;
-            return itCallback(only, skip)(testDescription, () => callback({...attributes, ...fixtureInterface}));
+            return itCallback(only, skip)(testDescription, () => callback({...attributes, ...fixtureInterface, dirName: dir}));
           }
         }
 
-        itCallback()(subDir, () => callback(fixtureInterface));
+        itCallback()(subDir, () => callback({...fixtureInterface, dirName: dir}));
       });
 
       function setupMochaCallbacks() {
