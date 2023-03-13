@@ -1,4 +1,5 @@
 # Generate Node.js unit tests from fixtures and callbacks
+[![NPM Version](https://img.shields.io/npm/v/@natlibfi/fixugen.svg)](https://npmjs.org/package/@natlibfi/fixugen) [![Node Version](https://img.shields.io/node/v/@natlibfi/fixugen.svg)]()
 
 [Mocha](https://mochajs.org/) is used a unit testing framework. Invoke fixugen in a .spec file with Mocha environment injected as usual.
 
