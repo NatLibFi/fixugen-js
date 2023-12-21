@@ -14,7 +14,7 @@
 		"url": "git@github.com:natlibfi/fixugen-js.git"
 	},
 	"license": "MIT",
-	"version": "2.0.3",
+	"version": "2.0.4-alpha.1",
 	"main": "./dist/index.js",
 	"engines": {
 		"node": ">=18"
@@ -26,32 +26,34 @@
 		"prepare": "npm run build",
 		"prepublishOnly": "npm run build",
 		"start": "node dist/index.js",
-		"lint": "eslint src",
-		"lint:dev": "eslint --fix src",
-		"test:base": "cross-env NODE_ENV=test mocha --require @babel/register --reporter-option maxDiffSize=15000 src/*.spec.js",
+		"lint": "eslint ./src",
+		"lint:dev": "eslint --fix ./src",
+		"test:base": "cross-env NODE_ENV=test nyc mocha --package ./package.json",
 		"test": "npm run lint && npm run test:base",
 		"test:dev": "npm run lint:dev && npm run coverage",
 		"coverage": "npm run coverage:unit && npm run coverage:report",
 		"coverage:unit": "nyc --silent npm run test:base",
 		"coverage:report": "nyc report",
 		"build": "babel src --source-maps --copy-files --delete-dir-on-start --out-dir=dist",
-		"dev:test": "cross-env DEBUG=@natlibfi/* NODE_ENV=test nodemon -w src -w test-fixtures --exec 'clear && npm run test:dev'"
+		"dev:test": "cross-env DEBUG=@natlibfi/* NODE_ENV=test nodemon",
+		"dev": "nodemon",
+		"dev:debug": "cross-env LOG_LEVEL=debug DEBUG=@natlibfi/* NODE_ENV=test nodemon"
 	},
 	"devDependencies": {
 		"@babel/cli": "^7.23.4",
-		"@babel/core": "^7.23.5",
+		"@babel/core": "^7.23.6",
 		"@babel/node": "^7.22.19",
-		"@babel/preset-env": "^7.23.5",
+		"@babel/preset-env": "^7.23.6",
 		"@babel/register": "^7.22.15",
 		"@natlibfi/eslint-config-melinda-backend": "^3.0.3",
-		"@natlibfi/fixura": "^3.0.3",
+		"@natlibfi/fixura": "^3.0.4",
 		"babel-plugin-istanbul": "^6.1.1",
 		"chai": "^4.3.10",
 		"cross-env": "^7.0.3",
-		"eslint": "^8.54.0",
+		"eslint": "^8.56.0",
 		"mocha": "^10.2.0",
 		"nock": "^13.4.0",
-		"nodemon": "^3.0.1",
+		"nodemon": "^3.0.2",
 		"nyc": "^15.1.0"
 	},
 	"eslintConfig": {
@@ -74,15 +76,33 @@
 			}
 		}
 	},
-	"nyc": {
-		"exclude": [
-			"*/*.spec.js"
-		],
-		"reporter": [
-			"text"
+	"mocha": {
+		"spec": [
+			"src/*.spec.js",
+			"src/**/*.spec.js"
 		],
 		"require": [
 			"@babel/register"
+		],
+		"inline-diffs": true,
+		"maxDiffSize": 25000,
+		"bail": true,
+		"exit": true
+	},
+	"nodemonConfig": {
+		"exec": "npm run test:dev",
+		"watch": [
+			"src/*",
+			"test-fixtures/*"
+		]
+	},
+	"nyc": {
+		"exclude": [
+			"src/*.spec.js",
+			"src/**/*.spec.js"
+		],
+		"reporter": [
+			"text"
 		],
 		"sourceMap": false,
 		"instrument": false,
