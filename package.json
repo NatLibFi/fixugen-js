@@ -14,7 +14,7 @@
 		"url": "git@github.com:natlibfi/fixugen-js.git"
 	},
 	"license": "MIT",
-	"version": "3.0.0-alpha.1",
+	"version": "3.0.0-alpha.2",
 	"module": "src/index.mjs",
 	"engines": {
 		"node": ">=22"
