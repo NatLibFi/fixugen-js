@@ -15,7 +15,7 @@
 	},
 	"license": "MIT",
 	"version": "2.0.15",
-	"main": "./sru/index.mjs",
+	"main": "./src/index.mjs",
 	"type": "module",
 	"engines": {
 		"node": ">=22"
@@ -26,14 +26,14 @@
 	"scripts": {
 		"lint": "eslint ./src",
 		"lint:dev": "eslint --fix ./src",
-		"test:base": "node --test --test-only --experimental-test-coverage --test-reporter=spec",
+		"test:base": "node --test --experimental-test-coverage --test-reporter=spec",
 		"test": "npm run lint && npm run test:base",
 		"watch:test": "cross-env DEBUG=@natlibfi/* NODE_ENV=test node --watch --test --experimental-test-coverage --test-reporter=spec",
 		"dev": "npm run watch:test",
 		"dev:debug": "cross-env LOG_LEVEL=debug DEBUG=@natlibfi/* NODE_ENV=test npm run watch:test"
 	},
 	"devDependencies": {
-		"@natlibfi/fixura": "file:../fixura-js/",
+		"@natlibfi/fixura": "^4.0.0-alpha.2",
 		"cross-env": "^7.0.3",
 		"eslint": "^9.30.1"
 	}

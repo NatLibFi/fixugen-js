@@ -2,8 +2,8 @@ import {describe} from 'node:test';
 import assert from 'node:assert';
 import generateTests from './index.mjs';
 
-describe('index', {only: true, skip: false}, () => {
-  describe('Should invoke callback with only Fixura functions', {only: true, skip: false}, () => {
+describe('index', () => {
+  describe('Should invoke callback with only Fixura functions', () => {
     let callbackCount = 0;
     generateTests({
       path: [import.meta.dirname, '..', 'test-fixtures', '01'],
@@ -44,7 +44,7 @@ describe('index', {only: true, skip: false}, () => {
     }
   });
 
-  describe('Should use metadata file for parameters', {only: true, skip: false}, () => {
+  describe('Should use metadata file for parameters', () => {
     let callbackCount = 0;
 
     generateTests({
@@ -68,7 +68,7 @@ describe('index', {only: true, skip: false}, () => {
     }
   });
 
-  describe('Should not recurse', {only: true, skip: false}, () => {
+  describe('Should not recurse', () => {
     let callbackCount = 0;
 
     generateTests({
@@ -91,7 +91,7 @@ describe('index', {only: true, skip: false}, () => {
   });
 });
 
-describe('Test naming', {only: true, skip: false}, async () => {
+describe('Test naming', async () => {
   await generateTests({
     path: [import.meta.dirname, '..', 'test-fixtures', 'naming'],
     recurse: true,
@@ -107,7 +107,7 @@ describe('Test naming', {only: true, skip: false}, async () => {
   });
 });
 
-describe('Skip', {only: true, skip: false}, async () => {
+describe('Skip', async () => {
   await generateTests({
     path: [import.meta.dirname, '..', 'test-fixtures', 'skip'],
     recurse: true,
@@ -123,7 +123,7 @@ describe('Skip', {only: true, skip: false}, async () => {
   });
 });
 
-describe('Only', {only: true, skip: false}, async () => {
+describe('Only', async () => {
   await generateTests({
     path: [import.meta.dirname, '..', 'test-fixtures', 'only'],
     recurse: true,

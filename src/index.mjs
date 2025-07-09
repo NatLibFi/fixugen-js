@@ -11,8 +11,6 @@ export default ({
   useMetadataFile = false,
   hooks = {}
 }) => {
-  const describeCallback = describe;
-
   if (recurse) {
     // console.log('recurse'); // eslint-disable-line
 
@@ -29,32 +27,53 @@ export default ({
   function setup(dir, rootDir) {
     // console.log(`setup: ${rootDir}/${dir}`); // eslint-disable-line
 
-    describeCallback(dir, {only: true, skip: false}, () => {
-      after(hooks.after || (() => { }));
-      before(hooks.before || (() => { }));
+    describe(dir, async () => {
       beforeEach(hooks.beforeEach || (() => { }));
       afterEach(hooks.afterEach || (() => { }));
+      before(hooks.before || (() => { }));
+      after(hooks.after || (() => { }));
 
-      readdirSync(joinPath(rootDir, dir)).forEach(subDir => {
-        const fixtureInterface = fixtureFactory({...fixura, root: [rootDir, dir, subDir]});
+      const testDirs = readdirSync(joinPath(rootDir, dir));
+      await testPump(testDirs, dir, rootDir);
+    });
+  }
 
-        if (useMetadataFile) {
-          const metadataPath = joinPath(rootDir, dir, subDir, 'metadata.json');
+  async function testPump(testDirs, dir, rootDir) {
+    const [subDir, ...rest] = testDirs;
+    if (subDir === undefined) {
+      return;
+    }
+    const fixtureInterface = fixtureFactory({...fixura, root: [rootDir, dir, subDir]});
 
-          if (existsSync(metadataPath)) {
-            const {description, skip = false, only = false, ...attributes} = JSON.parse(readFileSync(metadataPath, 'utf8'));
-            const subDirIsDigits = Number.isInteger(Number(subDir));
-            const testDescription = `${subDirIsDigits ? `${subDir} ` : ''}${skip ? 'SKIPPED ' : ''}${only ? 'ONLY ' : ''}${description || `${subDirIsDigits ? '' : subDir}`}`;
-            // console.log(`metadata: ${testDescription}`); // eslint-disable-line
-            // eslint-disable-next-line array-callback-return
-            return it(testDescription, {only, skip}, callback({...attributes, ...fixtureInterface, dirName: dir}));
-          }
+    if (useMetadataFile) {
+      const metadataPath = joinPath(rootDir, dir, subDir, 'metadata.json');
+
+      if (existsSync(metadataPath)) {
+        const {description, skip = false, only = false, ...attributes} = JSON.parse(readFileSync(metadataPath, 'utf8'));
+        const subDirIsDigits = Number.isInteger(Number(subDir));
+        const testDescription = `${subDirIsDigits ? `${subDir} ` : ''}${skip ? 'SKIPPED ' : ''}${only ? 'ONLY ' : ''}${description || `${subDirIsDigits ? '' : subDir}`}`;
+        // console.log(`metadata: ${testDescription}`); // eslint-disable-line
+        // eslint-disable-next-line array-callback-return
+
+        if (skip) {
+          await it.skip(testDescription, async () => await callback({...attributes, ...fixtureInterface, dirName: dir}));
+          return testPump(rest, dir, rootDir);
         }
 
-        // console.log(`just test: ${subDir}`); // eslint-disable-line
-        // eslint-disable-next-line array-callback-return
-        return it(subDir, {only: false, skip: false}, callback({...fixtureInterface, dirName: dir}));
-      });
-    });
+        if (only) {
+          await it.only(testDescription, async () => await callback({...attributes, ...fixtureInterface, dirName: dir}));
+          return testPump(rest, dir, rootDir);
+        }
+
+        await it(testDescription, async () => await callback({...attributes, ...fixtureInterface, dirName: dir}));
+        return testPump(rest, dir, rootDir);
+      }
+    }
+
+    // console.log(`just test: ${subDir}`); // eslint-disable-line
+    // eslint-disable-next-line array-callback-return
+
+    it(subDir, async () => await callback({...fixtureInterface, dirName: dir}));
+    return testPump(rest, dir, rootDir);
   }
 };
