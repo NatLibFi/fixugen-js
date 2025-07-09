@@ -15,8 +15,7 @@
 	},
 	"license": "MIT",
 	"version": "3.0.0-alpha.1",
-	"main": "./src/index.mjs",
-	"type": "module",
+	"module": "src/index.mjs",
 	"engines": {
 		"node": ">=22"
 	},
@@ -33,7 +32,7 @@
 		"dev:debug": "cross-env LOG_LEVEL=debug DEBUG=@natlibfi/* NODE_ENV=test npm run watch:test"
 	},
 	"devDependencies": {
-		"@natlibfi/fixura": "^4.0.0-alpha.2",
+		"@natlibfi/fixura": "^4.0.0-alpha.3",
 		"cross-env": "^7.0.3",
 		"eslint": "^9.30.1"
 	}
