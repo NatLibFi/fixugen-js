@@ -15,7 +15,12 @@
 	},
 	"license": "MIT",
 	"version": "3.0.0-alpha.2",
-	"module": "src/index.mjs",
+	"main": "./dist/index.js",
+	"module": "./dist/index.mjs",
+	"exports": {
+		"import": "./dist/index.mjs",
+		"require": "./dist/index.js"
+	},
 	"engines": {
 		"node": ">=22"
 	},
@@ -23,6 +28,10 @@
 		"access": "public"
 	},
 	"scripts": {
+		"prepare": "npm run build",
+		"build": "npm run build:cjs && npm run build:mjs",
+		"build:cjs": "esbuild src/**/*.mjs --sourcemap --platform=node --main-fields=main --outdir=dist --allow-overwrite --analyze",
+		"build:mjs": "esbuild src/**/*.mjs --sourcemap --platform=node --main-fields=module --outdir=dist --allow-overwrite --out-extension:.js=.mjs --format=esm",
 		"lint": "eslint ./src",
 		"lint:dev": "eslint --fix ./src",
 		"test:base": "node --test --experimental-test-coverage --test-reporter=spec",
@@ -31,9 +40,12 @@
 		"dev": "npm run watch:test",
 		"dev:debug": "cross-env LOG_LEVEL=debug DEBUG=@natlibfi/* NODE_ENV=test npm run watch:test"
 	},
+	"dependencies": {
+		"@natlibfi/fixura": "^4.0.0-alpha.8"
+	},
 	"devDependencies": {
-		"@natlibfi/fixura": "^4.0.0-alpha.3",
 		"cross-env": "^7.0.3",
+		"esbuild": "0.25.6",
 		"eslint": "^9.30.1"
 	}
 }
