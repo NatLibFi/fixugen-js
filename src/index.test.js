@@ -1,6 +1,6 @@
 import {describe} from 'node:test';
 import assert from 'node:assert';
-import generateTests from './index.mjs';
+import generateTests from './index.js';
 
 describe('index', () => {
   describe('Should invoke callback with only Fixura functions', () => {
