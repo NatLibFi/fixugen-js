@@ -13,7 +13,7 @@
 		"url": "https://github.com/NatLibFi/fixugen-js"
 	},
 	"license": "MIT",
-	"version": "3.0.0-alpha.7",
+	"version": "3.0.0",
 	"main": "./dist/index.js",
 	"type": "module",
 	"engines": {
