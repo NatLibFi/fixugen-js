@@ -15,7 +15,6 @@ export default ({
     // console.log('recurse'); // eslint-disable-line
 
     const rootDir = joinPath(...path);
-    // eslint-disable-next-line array-callback-return
     return readdirSync(rootDir).forEach(dir => setup(dir, rootDir));
   }
 
@@ -53,7 +52,6 @@ export default ({
         const subDirIsDigits = Number.isInteger(Number(subDir));
         const testDescription = `${subDirIsDigits ? `${subDir} ` : ''}${skip ? 'SKIPPED ' : ''}${only ? 'ONLY ' : ''}${description || `${subDirIsDigits ? '' : subDir}`}`;
         // console.log(`metadata: ${testDescription}`); // eslint-disable-line
-        // eslint-disable-next-line array-callback-return
 
         if (skip) {
           await it.skip(testDescription, async () => await callback({...attributes, ...fixtureInterface, dirName: dir}));
@@ -71,8 +69,6 @@ export default ({
     }
 
     // console.log(`just test: ${subDir}`); // eslint-disable-line
-    // eslint-disable-next-line array-callback-return
-
     it(subDir, async () => await callback({...fixtureInterface, dirName: dir}));
     return testPump(rest, dir, rootDir);
   }
