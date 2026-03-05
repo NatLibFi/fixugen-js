@@ -13,7 +13,7 @@
 		"url": "https://github.com/NatLibFi/fixugen-js"
 	},
 	"license": "MIT",
-	"version": "3.0.0",
+	"version": "3.0.1-alpha.1",
 	"main": "./dist/index.js",
 	"type": "module",
 	"engines": {
@@ -34,11 +34,11 @@
 		"dev:debug": "cross-env LOG_LEVEL=debug DEBUG=@natlibfi/* NODE_ENV=test npm run watch:test"
 	},
 	"dependencies": {
-		"@natlibfi/fixura": "^4.0.0"
+		"@natlibfi/fixura": "^4.0.1"
 	},
 	"devDependencies": {
 		"cross-env": "^10.1.0",
-		"esbuild": "0.25.12",
-		"eslint": "^9.39.1"
+		"esbuild": "^0.27.3",
+		"eslint": "^10.0.2"
 	}
 }
