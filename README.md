@@ -1,24 +1,24 @@
 # Generate Node.js unit tests from fixtures and callbacks
 [![NPM Version](https://img.shields.io/npm/v/@natlibfi/fixugen.svg)](https://npmjs.org/package/@natlibfi/fixugen) [![Node Version](https://img.shields.io/node/v/@natlibfi/fixugen.svg)]()
 
-[Mocha](https://mochajs.org/) is used a unit testing framework. Invoke fixugen in a .spec file with Mocha environment injected as usual.
-
 Provides test callbacks with [Fixura's](https://www.npmjs.com/package/@natlibfi/fixura) functions to fetch test fixtures.
 
 ## Usage
-The test fixture directory is parsed as follows: Each subdirectory becomes a unit test group (Mocha's `describe`) and inner subdirectories each represent individual tests (Mocha's `it`).
+The test fixture directory is parsed as follows: Each subdirectory becomes a unit test group (Node's native `describe`) and inner subdirectories each represent individual tests (Node's native `it`). For custom test variables see metadata example.
 
 ```js
 import generateTests from '@natlibfi/fixugen';
 
 generateTests({
-  path: [__dirname, '..', 'test-fixtures'],
-  callback: ({getFixture}) => {
-    const expectedValue = getFixture('value.txt');
-    const value = generateSomething();
-    expect(value).to.equal(expectedValue);
-  }
+  callback,
+  path: [__dirname, '..', 'test-fixtures']
 });
+
+function callback({getFixture, custom}) {
+  const expectedValue = getFixture('value.txt');
+  const value = generateSomething(custom);
+  expect(value).to.equal(expectedValue);
+}
 ```
 
 ### Options
@@ -38,7 +38,8 @@ generateTests({
 {
   "description": "Example description of test",
   "skip": false,
-  "only": false
+  "only": false,
+  "custom": "Custom variable delivered for test"
 }
 ```
 
