@@ -3,14 +3,32 @@ import {join as joinPath} from 'path';
 import {readdirSync, existsSync, readFileSync} from 'fs';
 import {describe, it, after, afterEach, before, beforeEach} from 'node:test';
 
+interface timedHooks {
+  before?: () => void,
+  beforeEach?: () => void,
+  after?: () => void,
+  afterEach?: () => void
+}
+
+interface FixugenOpts {
+  // eslint-disable-next-line no-unused-vars
+  callback: (callbackOpts) => void,
+  path: string[],
+  recurse?: boolean,
+  fixura?: object,
+  useMetadataFile?: boolean,
+  hooks?: timedHooks
+}
+
 export default ({
   callback,
   path,
   recurse = true,
   fixura = {},
   useMetadataFile = false,
-  hooks = {}
-}) => {
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  hooks = {before: () => { }, beforeEach: () => { }, after: () => { }, afterEach: () => { }}
+}: FixugenOpts) => {
   if (recurse) {
     // console.log('recurse'); // eslint-disable-line
 
@@ -27,10 +45,10 @@ export default ({
     // console.log(`setup: ${rootDir}/${dir}`); // eslint-disable-line
 
     describe(dir, async () => {
-      beforeEach(hooks.beforeEach || (() => { }));
-      afterEach(hooks.afterEach || (() => { }));
-      before(hooks.before || (() => { }));
-      after(hooks.after || (() => { }));
+      beforeEach(hooks.beforeEach);
+      afterEach(hooks.afterEach);
+      before(hooks.before);
+      after(hooks.after);
 
       const testDirs = readdirSync(joinPath(rootDir, dir));
       await testPump(testDirs, dir, rootDir);

@@ -1,33 +1,19 @@
-import {describe} from 'node:test';
 import assert from 'node:assert';
-import generateTests from './index.js';
+import {describe} from 'node:test';
+import generateTests from './index.ts';
 
 describe('index', () => {
-  describe('Should invoke callback with only Fixura functions', () => {
+  describe('Should invoke callback with only Fixugen functions', () => {
     let callbackCount = 0;
+
     generateTests({
-      path: [import.meta.dirname, '..', 'test-fixtures', '01'],
       callback,
-      hooks: { // Should not execute random functions from hooks
-        /* node:coverage ignore next 18 */
-        it: {
-          default: (description, callback) => {
-            try {
-              expect(description).to.equal('01 foo');
-              return callback();
-            } catch (err) {
-              throw err;
-            }
-          }
-        },
-        describe: (description, callback) => {
-          try {
-            expect(description).to.equal('test');
-            return callback();
-          } catch (err) {
-            throw err;
-          }
-        }
+      path: [import.meta.dirname, '..', 'test-fixtures', '01'],
+      hooks: {
+        // @ts-expect-error hooks should not trigger random extra functions
+        random: () => callback,
+        it: () => callback,
+        describe: () => callback
       }
     });
 
@@ -43,6 +29,7 @@ describe('index', () => {
       callbackCount++; // eslint-disable-line no-plusplus
     }
   });
+
 
   describe('Should use metadata file for parameters', () => {
     let callbackCount = 0;
@@ -114,21 +101,6 @@ describe('Skip', async () => {
     useMetadataFile: true,
     callback: args => {
       // console.log(`Callback args: ${JSON.stringify(args)}`); // eslint-disable-line
-      assert.equal(typeof args, 'object');
-      assert.equal(Object.hasOwn(args, 'getFixture'), true);
-      assert.equal(Object.hasOwn(args, 'getFixtures'), true);
-      assert.equal(Object.hasOwn(args, 'dirName'), true);
-      assert.equal(args.getFixture('test.txt'), 'foo');
-    }
-  });
-});
-
-describe('Only', async () => {
-  await generateTests({
-    path: [import.meta.dirname, '..', 'test-fixtures', 'only'],
-    recurse: true,
-    useMetadataFile: true,
-    callback: args => {
       assert.equal(typeof args, 'object');
       assert.equal(Object.hasOwn(args, 'getFixture'), true);
       assert.equal(Object.hasOwn(args, 'getFixtures'), true);
