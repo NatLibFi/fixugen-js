@@ -94,8 +94,8 @@ describe('Test naming', async () => {
   });
 });
 
-describe('Skip', async () => {
-  await generateTests({
+describe('Skip', () => {
+  generateTests({
     path: [import.meta.dirname, '..', 'test-fixtures', 'skip'],
     recurse: true,
     useMetadataFile: true,
