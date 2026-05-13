@@ -3,32 +3,33 @@ import {join as joinPath} from 'path';
 import {readdirSync, existsSync, readFileSync} from 'fs';
 import {describe, it, after, afterEach, before, beforeEach} from 'node:test';
 
-interface timedHooks {
-  before?: () => void,
-  beforeEach?: () => void,
-  after?: () => void,
-  afterEach?: () => void
-}
-
 interface FixugenOpts {
   // eslint-disable-next-line no-unused-vars
   callback: (callbackOpts) => void,
   path: string[],
   recurse?: boolean,
-  fixura?: object,
+  fixura?: {
+    reader?: number,
+    failWhenNotFound?: boolean
+  },
   useMetadataFile?: boolean,
-  hooks?: timedHooks
+  hooks?: {
+    before?: () => void,
+    beforeEach?: () => void,
+    after?: () => void,
+    afterEach?: () => void
+  }
 }
 
-export default ({
+export default function generateTests({
   callback,
   path,
   recurse = true,
   fixura = {},
   useMetadataFile = false,
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  hooks = {before: () => { }, beforeEach: () => { }, after: () => { }, afterEach: () => { }}
-}: FixugenOpts) => {
+  hooks = {before: () => {}, beforeEach: () => {}, after: () => {}, afterEach: () => {}}
+}: FixugenOpts) {
   if (recurse) {
     // console.log('recurse'); // eslint-disable-line
 
