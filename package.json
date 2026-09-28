@@ -31,7 +31,7 @@
 		"test:only": "node --test-only --experimental-test-coverage --test-reporter=spec './src/index.test.only.ts'",
 		"test": "npm run lint && npm run test:base && npm run test:only",
 		"dev": "npm run watch:test",
-		"dev:debug": "cross-env LOG_LEVEL=debug DEBUG=@natlibfi/* NODE_ENV=test npm run watch:test"
+		"dev:debug": "cross-env LOG_LEVEL=debug DEBUG=@natlibfi/* NODE_ENV=test npm run test"
 	},
 	"dependencies": {
 		"@natlibfi/fixura": "^5.0.0"
