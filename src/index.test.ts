@@ -1,6 +1,6 @@
 import assert from 'node:assert';
 import {describe} from 'node:test';
-import generateTests from './index.ts';
+import generateTests, {type CallbackArgs} from './index.ts';
 
 describe('index', () => {
   describe('Should invoke callback with only Fixugen functions', () => {
@@ -17,7 +17,7 @@ describe('index', () => {
       }
     });
 
-    function callback(args) {
+    function callback(args: CallbackArgs) {
       // console.log(`Callback args: ${JSON.stringify(args)}`); // eslint-disable-line
       assert.equal(callbackCount, 0);
       assert.equal(typeof args, 'object');
@@ -40,7 +40,7 @@ describe('index', () => {
       callback
     });
 
-    function callback(args) {
+    function callback(args: CallbackArgs) {
       // console.log(`Callback args: ${JSON.stringify(args)}`); // eslint-disable-line
       assert.equal(callbackCount, 0);
       assert.equal(typeof args, 'object');
@@ -49,7 +49,7 @@ describe('index', () => {
       assert.equal(Object.hasOwn(args, 'dirName'), true);
       assert.equal(Object.hasOwn(args, 'foo'), true);
       assert.equal(args.getFixture('test.txt'), 'foo');
-      assert.equal(args.foo, 'bar');
+      assert.equal(args['foo'], 'bar');
 
       callbackCount++; // eslint-disable-line no-plusplus
     }
@@ -64,7 +64,7 @@ describe('index', () => {
       callback
     });
 
-    function callback(args) {
+    function callback(args: CallbackArgs) {
       // console.log(`Callback args: ${JSON.stringify(args)}`); // eslint-disable-line
       assert.equal(callbackCount, 0);
       assert.equal(typeof args, 'object');

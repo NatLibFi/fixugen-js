@@ -1,15 +1,19 @@
-import fixtureFactory from '@natlibfi/fixura';
+import fixtureFactory, {type Reader} from '@natlibfi/fixura';
 import {join as joinPath} from 'path';
 import {readdirSync, existsSync, readFileSync} from 'fs';
 import {describe, it, after, afterEach, before, beforeEach} from 'node:test';
 
+export type CallbackArgs = {
+  dirName: string,
+} & ReturnType<typeof fixtureFactory> & Record<string, unknown>
+
 interface FixugenOpts {
   // eslint-disable-next-line no-unused-vars
-  callback: (callbackOpts) => void,
+  callback: (callbackOpts: CallbackArgs) => Promise<void> | void,
   path: string[],
   recurse?: boolean,
   fixura?: {
-    reader?: number,
+    reader?: Reader,
     failWhenNotFound?: boolean
   },
   useMetadataFile?: boolean,
@@ -34,15 +38,15 @@ export default function generateTests({
     // console.log('recurse'); // eslint-disable-line
 
     const rootDir = joinPath(...path);
-    return readdirSync(rootDir).forEach(dir => setup(dir, rootDir));
+    return readdirSync(rootDir, {withFileTypes: true}).filter(e => e.isDirectory()).map(e => e.name).forEach(dir => setup(dir, rootDir));
   }
 
   const rootDir = joinPath(...path.slice(0, -1));
-  const [subDir] = path.slice(-1);
+  const [subDir] = path.slice(-1) as [string];
 
   setup(subDir, rootDir);
 
-  function setup(dir, rootDir) {
+  function setup(dir: string, rootDir: string) {
     // console.log(`setup: ${rootDir}/${dir}`); // eslint-disable-line
 
     describe(dir, async () => {
@@ -51,12 +55,12 @@ export default function generateTests({
       before(hooks.before);
       after(hooks.after);
 
-      const testDirs = readdirSync(joinPath(rootDir, dir));
+      const testDirs = readdirSync(joinPath(rootDir, dir), {withFileTypes: true}).filter(e => e.isDirectory()).map(e => e.name);
       await testPump(testDirs, dir, rootDir);
     });
   }
 
-  async function testPump(testDirs, dir, rootDir) {
+  async function testPump(testDirs: string[], dir: string, rootDir: string) {
     const [subDir, ...rest] = testDirs;
     if (subDir === undefined) {
       return;
