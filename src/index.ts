@@ -7,7 +7,7 @@ export type CallbackArgs = {
   dirName: string,
 } & ReturnType<typeof fixtureFactory> & Record<string, unknown>
 
-interface FixugenOpts {
+export interface FixugenOpts {
   // eslint-disable-next-line no-unused-vars
   callback: (callbackOpts: CallbackArgs) => Promise<void> | void,
   path: string[],
