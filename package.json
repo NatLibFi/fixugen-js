@@ -13,7 +13,7 @@
 		"url": "https://github.com/NatLibFi/fixugen-js"
 	},
 	"license": "MIT",
-	"version": "4.0.0",
+	"version": "4.0.1-alpha.1",
 	"main": "./dist/index.js",
 	"type": "module",
 	"engines": {
@@ -30,18 +30,19 @@
 		"test:base": "node --test --experimental-test-coverage --test-reporter=spec './src/index.test.ts'",
 		"test:only": "node --test-only --experimental-test-coverage --test-reporter=spec './src/index.test.only.ts'",
 		"test": "npm run lint && npm run test:base && npm run test:only",
-		"dev": "npm run test",
-		"dev:debug": "cross-env LOG_LEVEL=debug DEBUG=@natlibfi/* NODE_ENV=test npm run test"
+		"watch:test": "cross-env DEBUG=@natlibfi/* NODE_ENV=test node --watch --test --experimental-test-coverage --test-reporter=spec './src/*.test.ts' './src/*.test.only.ts'",
+		"dev": "npm run watch:test",
+		"dev:debug": "cross-env LOG_LEVEL=debug DEBUG=@natlibfi/* NODE_ENV=test npm run watch:test"
 	},
 	"dependencies": {
-		"@natlibfi/fixura": "^5.0.0"
+		"@natlibfi/fixura": "^5.1.1"
 	},
 	"devDependencies": {
-		"@types/node": "^26.1.0",
+		"@types/node": "^26.6.6",
 		"cross-env": "^10.1.0",
-		"eslint": "^10.6.0",
+		"eslint": "^10.14.0",
 		"jiti": "^2.7.0",
 		"typescript": "^6.0.3",
-		"typescript-eslint": "^8.63.0"
+		"typescript-eslint": "^8.72.2"
 	}
 }
