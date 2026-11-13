@@ -15,7 +15,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [24.x]
+        node-version: [24.x, 26.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
@@ -28,7 +28,7 @@ jobs:
         cache: 'npm'
       env:
         NPM_CONFIG_IGNORE_SCRIPTS: true
-    - run: npm audit --package-lock-only --production --audit-level=moderate
+    - run: npm audit --package-lock-only --production --audit-level=high
     - run: npm ci
     - run: npm test
 
