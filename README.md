@@ -1,7 +1,12 @@
-# Generate Node.js unit tests from fixtures and callbacks
-[![NPM Version](https://img.shields.io/npm/v/@natlibfi/fixugen.svg)](https://npmjs.org/package/@natlibfi/fixugen) [![Node Version](https://img.shields.io/node/v/@natlibfi/fixugen.svg)]()
+# Generate Node.js unit tests from fixtures and callbacks [![NPM Version](https://img.shields.io/npm/v/@natlibfi/fixugen.svg)](https://npmjs.org/package/@natlibfi/fixugen)
 
 Provides test callbacks with [Fixura's](https://www.npmjs.com/package/@natlibfi/fixura) functions to fetch test fixtures.
+
+## Workflow status
+| Branch | Workflow status                                                                                                                                             |
+|--------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| main   | ![Workflow status badge for branch main](https://github.com/NatLibFi/fixugen-js/actions/workflows/melinda-node-tests-and-publish.yml/badge.svg?branch=main) |
+| test   | ![Workflow status badge for branch test](https://github.com/NatLibFi/fixugen-js/actions/workflows/melinda-node-tests-and-publish.yml/badge.svg?branch=test) |
 
 ## Usage
 The test fixture directory is parsed as follows: Each subdirectory becomes a unit test group (node:test's `describe`) and inner subdirectories each represent individual tests (node:test's `it`). For custom test variables see metadata example.
